@@ -12,7 +12,9 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class SoftwareEngineeringProject {
+import com.mysql.cj.jdbc.result.ResultSetMetaData;
+
+public class SoftwareEngineeringApp {
 
     public static void main(String[] args) {
         String url = "jdbc:mysql://localhost:3306/project_scheme?serverTimezone=UTC";
@@ -32,13 +34,18 @@ public class SoftwareEngineeringProject {
             String userInput = "";
 
             while (true) {
-                System.out.println("Would you like to Search(S), Update(U), Delete(D), or Add(A) to the database? ");
+                System.out.println(
+                        "Would you like to Search(S), Update(U), Delete(D), Add(A), or end the process(E) to the database? ");
                 userInput = scan.next().toUpperCase();
 
-                if (userInput.equals("S") || userInput.equals("D") || userInput.equals("U") || userInput.equals("A")) {
+                if (userInput.equals("S")
+                        || userInput.equals("D")
+                        || userInput.equals("U")
+                        || userInput.equals("A")
+                        || userInput.equals("E")) {
                     break;
                 } else {
-                    System.out.println("Please Enter one of the 4 options (S, U, D, or A)!");
+                    System.out.println("Please Enter one of the 4 options (S, U, D, A, or E)!");
                 }
             }
 
@@ -58,6 +65,10 @@ public class SoftwareEngineeringProject {
                 case "A" -> {
                     System.out.println("Currently Adding");
                 }
+
+                case "E" -> {
+                    System.out.println("Ending process");
+                }
             }
 
             scan.close();
@@ -74,71 +85,66 @@ public class SoftwareEngineeringProject {
         String user = "root";
         String password = "T3rr@pin$2ii2";
 
-        try (Connection conn = DriverManager.getConnection(url, user, password);) {
+        try (Connection conn = DriverManager.getConnection(url, user, password)) {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("show tables");
-
-            // Printing all available tables to user to choose from. More versatile than
-            // just printing names
-            while (rs.next()) {
-
-            }
-
-            Scanner scan = new Scanner(System.in);
             HashMap<String, String> options = new HashMap<>();
 
-            // Making a hashmap to store options so we don't have a bunch of nested
-            // if/switch statements.
-            // Nobody likes unneccesary time complexity
-
-            String tableInput;
-
-            // Using while statement because people don't know how to hit 1, 2, or 3
-            while (true) {
-
-                for (String key : options.keySet()) {
-                    System.out.print("For " + key + " press " + options.get(key) + "\n");
-                }
-
-                tableInput = scan.next();
-
-                if (!options.containsValue(tableInput)) {
-                    System.out.println("Invalid input. Please enter one of the 3 options (1,2,3)");
-                } else
-                    break;
+            // Printing all available tables to user to choose from. More versatile than
+            // just printing a preset name
+            // Also making a hashmap which only really works here because its such a small
+            // data set
+            // But it makes it so we can make changes to the table amount or names without
+            // changing the logic
+            int count = 1;
+            while (rs.next()) {
+                String tableName = rs.getString("Tables_in_project_scheme");
+                options.put(String.valueOf(count), tableName);
+                count++;
             }
 
             String result = "";
-            // Using switch statement to quickly detect input and run function to handle the
-            // table search
-            switch (tableInput) {
-                case "1" -> {
-                    result = HandleDBSearch("patients");
+            try (Scanner scan = new Scanner(System.in)) {
+
+                String tableInput;
+                while (true) {
+
+                    for (String key : options.keySet()) {
+                        System.out.print("For " + key + " press " + options.get(key) + "\n");
+                    }
+                    System.out.println("(Enter E to end process)");
+
+                    tableInput = scan.next().toUpperCase();
+
+                    if (tableInput.equals("E")) {
+                        return "Ending Process";
+                    } else if (!options.containsKey(tableInput)) {
+                        System.out.println("Invalid input. Please enter one of the options");
+                    } else
+                        break;
                 }
-                case "2" -> {
-                    result = HandleDBSearch("procedures");
-                }
-                case "3" -> {
-                    result = HandleDBSearch("procedure_history");
-                }
+
+                result = HandleDBSearch(options.get(tableInput));
             }
             return result;
         }
     }
 
-    public static String HandleDBSearch(String tableName) {
+    public static String HandleDBSearch(String tableName) throws SQLException {
+        String url = "jdbc:mysql://localhost:3306/project_scheme?serverTimezone=UTC";
+        String user = "root";
+        String password = "T3rr@pin$2ii2";
 
-        HashMap<String, String> tableInfo = new HashMap<>();
+        try (Connection conn = DriverManager.getConnection(url, user, password)) {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = rs.executeQuery("select * from " + tableName);
 
-        System.out.println("What are you looking for in the database?");
-        System.out.println("""
-                A patient by a name(1)
-                A patient by an MRN(2)
-                A patient by an address(3)
-                Patients under a certain doctor(4)
-                Patients under a certain insurance(5)""");
+            ResultSetMetaData metaData = rs.getMetaData();
+            int columnCount = metaData.getColumnCount();
 
-        return null;
+        }
+
+        return tableName;
     }
 
 }
