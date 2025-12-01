@@ -1,0 +1,49 @@
+ case "U" -> {
+                //users need to indicate what they want to update
+                //either patient info, procedure info, or procedure history
+                System.out.println("Would you like to update the info of a patient, procedure, or procedure history?");
+                userInput = scan.nextLine().toLowerCase();
+                if(userInput.equals("patient")){
+                    System.out.println("Currently Updating");
+                    System.out.println("What is the MRN for the patient info you want to update?");
+                    userInput = scan.next().toUpperCase();
+                    String MRN = userInput;
+                    System.out.println("What is the field you'd like to update?");
+                    userInput = scan.next();
+                    String fieldToUpdate = userInput;
+                    System.out.println("New value:");
+                    userInput = scan.next();
+                    String value = userInput;
+                    alterPatient.update(MRN, fieldToUpdate, value);
+                }
+                if(userInput.equals("procedure")){
+                    System.out.println("Currently Updating");
+                    System.out.println("What is the procedure ID for the procedure you want to update");
+                    userInput = scan.next().toUpperCase();
+                    String pid = userInput;
+                    System.out.println("What is the field that you'd like to update?");
+                    userInput = scan.next();
+                    String fieldToUpdate = userInput;
+                    System.out.println("New value:");
+                    userInput = scan.next();
+                    String value = userInput;
+                    alterProcedures.update(pid, fieldToUpdate, value);
+                }
+                if(userInput.equals("procedure history")){
+                    System.out.println("Currently Updating");
+                    System.out.println("What is the procedure ID for the history you want to update");
+                    userInput = scan.next().toUpperCase();
+                    String pid = userInput;
+                    System.out.println("What is the MRN for the history you want to update");
+                    userInput = scan.next().toUpperCase();
+                    String MRN = userInput;
+                    System.out.println("What is the field that you'd like to update?");
+                    userInput = scan.next();
+                    String fieldToUpdate = userInput;
+                    System.out.println("New value:");
+                    userInput = scan.next();
+                    String value = userInput;
+                    alterProcedureHistory.update(MRN,pid, fieldToUpdate, value);
+                }
+                
+            }
