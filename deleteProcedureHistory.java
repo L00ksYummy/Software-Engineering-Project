@@ -23,9 +23,9 @@ public class deleteProcedureHistory {
             int rowsAffected = pstmt.executeUpdate();
 
             if (rowsAffected > 0) {
-                System.out.println("🗑️ Procedure history entry deleted successfully.");
+                System.out.println("Procedure history entry deleted successfully.");
             } else {
-                System.out.println("⚠️ No matching record found in procedure history.");
+                System.out.println("No matching record found in procedure history.");
             }
 
         } catch (SQLException e) {
