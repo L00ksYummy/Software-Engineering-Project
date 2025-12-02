@@ -21,9 +21,9 @@ public class deleteProcedure {
             int rowsAffected = pstmt.executeUpdate();
 
             if (rowsAffected > 0) {
-                System.out.println("🗑️ Procedure deleted successfully.");
+                System.out.println("Procedure deleted successfully.");
             } else {
-                System.out.println("⚠️ No procedure found with that Procedure ID.");
+                System.out.println("No procedure found with that Procedure ID.");
             }
 
         } catch (SQLException e) {
