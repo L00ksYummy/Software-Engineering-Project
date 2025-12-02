@@ -21,9 +21,9 @@ public class deletePatient {
             int rowsAffected = pstmt.executeUpdate();
 
             if (rowsAffected > 0) {
-                System.out.println("🗑️ Patient record deleted successfully.");
+                System.out.println("Patient record deleted successfully.");
             } else {
-                System.out.println("⚠️ No patient found with that MRN.");
+                System.out.println("No patient found with that MRN.");
             }
 
         } catch (SQLException e) {
