@@ -1,5 +1,5 @@
 // Software Engineering Project main file
-// Michael Allen, Kyle Pollack, Colin Williams
+// Michael Allen, Kyle Pollack, Connor Williams
 
 /*
  * list patient id and name then let them pick it
